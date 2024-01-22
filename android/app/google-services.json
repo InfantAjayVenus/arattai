@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "648619095794",
+    "project_id": "arattai-server",
+    "storage_bucket": "arattai-server.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648619095794:android:d16563d4161ea84964426b",
+        "android_client_info": {
+          "package_name": "com.example.arattai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD43mZJiYXAZyaIFqa540k33Db2du7qhGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
