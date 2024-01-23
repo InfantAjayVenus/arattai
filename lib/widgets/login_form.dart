@@ -15,7 +15,14 @@ class _LoginFormState extends State<LoginForm> {
   String password = '';
 
   login() async {
+    final isFormValid = _loginKey.currentState?.validate() ?? false;
+    if (!isFormValid) {
+      return;
+    }
+    _loginKey.currentState?.save();
+
     try {
+      print('DEBUG:LOGIN_VALUES: $email / $password');
       final userCreds = await _firebase.signInWithEmailAndPassword(
           email: email, password: password);
       print(userCreds);
@@ -72,6 +79,11 @@ class _LoginFormState extends State<LoginForm> {
 
                 return null;
               },
+              onChanged: (value) {
+                setState(() {
+                  password = value.trim();
+                });
+              },
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
             ),
@@ -83,9 +95,7 @@ class _LoginFormState extends State<LoginForm> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    if (_loginKey.currentState!.validate()) {
-                      _loginKey.currentState?.save();
-                    }
+                    login();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context)
