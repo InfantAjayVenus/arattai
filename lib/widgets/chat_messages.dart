@@ -1,4 +1,6 @@
+import 'package:arattai/widgets/chat_bubble.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessages extends StatelessWidget {
@@ -32,13 +34,24 @@ class ChatMessages extends StatelessWidget {
 
         final messagesList = snapshot.data!.docs;
 
-        return ListView.builder(
-          itemCount: messagesList.length,
-          itemBuilder: (context, index) {
-            final messageItem = messagesList[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: ListView.builder(
+            itemCount: messagesList.length,
+            itemBuilder: (context, index) {
+              final messageItem = messagesList[index].data();
 
-            return Text(messageItem.data()['text']);
-          },
+              return ChatBubble(
+                message: messageItem['text'],
+                username: messageItem['username'],
+                isSender: messageItem['uid'] ==
+                    FirebaseAuth.instance.currentUser!.uid,
+                imageUrl: messageItem['imageUrl'],
+              );
+            },
+          ),
         );
       },
     );
