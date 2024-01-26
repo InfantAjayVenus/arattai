@@ -11,7 +11,7 @@ class ChatMessages extends StatelessWidget {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("chats")
-          .orderBy('createdAt', descending: false)
+          .orderBy('createdAt', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -39,6 +39,7 @@ class ChatMessages extends StatelessWidget {
             horizontal: 16,
           ),
           child: ListView.builder(
+            reverse: true,
             itemCount: messagesList.length,
             itemBuilder: (context, index) {
               final messageItem = messagesList[index].data();
