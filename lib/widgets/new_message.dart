@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class NewMessage extends StatefulWidget {
   const NewMessage({super.key});
@@ -13,18 +14,13 @@ class NewMessage extends StatefulWidget {
 
 class _NewMessageState extends State<NewMessage> {
   final _messageController = TextEditingController();
-
-  @override
-  void dispose() {
-    _messageController.dispose();
-    super.dispose();
-  }
+  final _formKey = GlobalKey<FormState>();
 
   void submitMessage() async {
-    final message = _messageController.text.trim();
-    _messageController.clear();
+    final messageText = _messageController.text;
 
-    if (message == '' || message.isEmpty) {
+    _messageController.clear();
+    if (messageText == '' || messageText.isEmpty) {
       return;
     }
 
@@ -35,7 +31,7 @@ class _NewMessageState extends State<NewMessage> {
         .get();
 
     await FirebaseFirestore.instance.collection('chats').add({
-      'text': message,
+      'text': messageText,
       'createdAt': Timestamp.now(),
       'uid': user.uid,
       'username': await userData.data()!['username']
@@ -44,38 +40,47 @@ class _NewMessageState extends State<NewMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              //autofocus: true,
-              textCapitalization: TextCapitalization.sentences,
-              autocorrect: true,
-              enableSuggestions: true,
-              cursorHeight: 25,
-              textAlignVertical: TextAlignVertical.center,
-              decoration: const InputDecoration(
-                hintText: "Enter Your Messages Here.",
-                alignLabelWithHint: false,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(100),
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _messageController,
+                textCapitalization: TextCapitalization.sentences,
+                autocorrect: true,
+                enableSuggestions: true,
+                cursorHeight: 25,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: const InputDecoration(
+                  hintText: "Enter Your Messages Here.",
+                  alignLabelWithHint: false,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100),
+                    ),
                   ),
                 ),
+                validator: (value) {
+                  return null;
+                },
+                onFieldSubmitted: (value) {
+                  print('Submitting');
+                  submitMessage();
+                },
               ),
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              submitMessage();
-            },
-            icon: const Icon(Icons.send_rounded),
-            iconSize: 45,
-          )
-        ],
+            IconButton(
+              onPressed: () {
+                submitMessage();
+              },
+              icon: const Icon(Icons.send_rounded),
+              iconSize: 45,
+            )
+          ],
+        ),
       ),
     );
   }
