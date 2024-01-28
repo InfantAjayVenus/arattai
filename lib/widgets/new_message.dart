@@ -42,42 +42,59 @@ class _NewMessageState extends State<NewMessage> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(
+            width: 1,
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Row(
           children: [
             Expanded(
-              child: TextFormField(
-                controller: _messageController,
-                textCapitalization: TextCapitalization.sentences,
-                autocorrect: true,
-                enableSuggestions: true,
-                cursorHeight: 25,
-                textAlignVertical: TextAlignVertical.center,
-                decoration: const InputDecoration(
-                  hintText: "Enter Your Messages Here.",
-                  alignLabelWithHint: false,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(100),
-                    ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: TextFormField(
+                  controller: _messageController,
+                  textCapitalization: TextCapitalization.sentences,
+                  autocorrect: true,
+                  enableSuggestions: true,
+                  cursorHeight: 25,
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: const InputDecoration(
+                    hintText: "Enter Your Messages Here.",
+                    border: InputBorder.none,
                   ),
+                  validator: (value) {
+                    return null;
+                  },
+                  onFieldSubmitted: (value) {
+                    submitMessage();
+                  },
                 ),
-                validator: (value) {
-                  return null;
-                },
-                onFieldSubmitted: (value) {
-                  print('Submitting');
-                  submitMessage();
-                },
               ),
             ),
-            IconButton(
-              onPressed: () {
-                submitMessage();
-              },
-              icon: const Icon(Icons.send_rounded),
-              iconSize: 45,
+            Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  border: const Border(
+                    left: BorderSide(
+                      width: 1,
+                    ),
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                  )),
+              child: IconButton(
+                onPressed: () {
+                  submitMessage();
+                },
+                icon: const Icon(Icons.send_rounded),
+                iconSize: 45,
+              ),
             )
           ],
         ),
