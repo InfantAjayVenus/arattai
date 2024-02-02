@@ -153,6 +153,7 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 label: Text('Re-Enter Password'),
                 hintText: "Enter your password again",
