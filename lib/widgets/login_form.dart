@@ -13,6 +13,7 @@ class _LoginFormState extends State<LoginForm> {
   final _loginKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  bool invalidCreds = false;
 
   login() async {
     final isFormValid = _loginKey.currentState?.validate() ?? false;
@@ -20,6 +21,9 @@ class _LoginFormState extends State<LoginForm> {
       return;
     }
     _loginKey.currentState?.save();
+    setState(() {
+      invalidCreds = false;
+    });
 
     try {
       print('DEBUG:LOGIN_VALUES: $email / $password');
@@ -27,7 +31,12 @@ class _LoginFormState extends State<LoginForm> {
           email: email, password: password);
       print(userCreds);
     } on FirebaseAuthException catch (e) {
-      print('DEBUG:SIGN_IN_ERROR: ${e.code}');
+      if (e.code == 'invalid-credential') {
+        print('DEBUG:SIGN_IN_ERROR: ${e.code}');
+        setState(() {
+          invalidCreds = true;
+        });
+      }
     }
   }
 
@@ -119,6 +128,12 @@ class _LoginFormState extends State<LoginForm> {
             const SizedBox(
               height: 20,
             ),
+            if (invalidCreds)
+              Text(
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  'Invalid E-Mail or Password'),
           ],
         ),
       ),
