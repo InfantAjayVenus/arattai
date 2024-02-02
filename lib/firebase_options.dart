@@ -18,10 +18,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -53,11 +50,20 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static final FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_WEB_KEY']!,
+    appId: dotenv.env['FIREBASE_WEB_APP_ID']!,
+    messagingSenderId: dotenv.env['FIREBASE_WEB_MESSAGING_SENDER']!,
+    projectId: dotenv.env['FIREBASE_WEB_PROJECT']!,
+    storageBucket: dotenv.env['FIREBASE_WEB_STORAGE']!,
+    authDomain: dotenv.env['FIREBASE_WEB_AUTH_DOMAIN']!,
+  );
+
   static final FirebaseOptions android = FirebaseOptions(
-    apiKey: dotenv.env['FIREBASE_KEY']!,
-    appId: dotenv.env['FIREBASE_APP_ID']!,
-    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER']!,
-    projectId: dotenv.env['FIREBASE_PROJECT']!,
-    storageBucket: dotenv.env['FIREBASE_STORAGE']!,
+    apiKey: dotenv.env['FIREBASE_ANDROID_KEY']!,
+    appId: dotenv.env['FIREBASE_ANDROID_APP_ID']!,
+    messagingSenderId: dotenv.env['FIREBASE_ANDROID_MESSAGING_SENDER']!,
+    projectId: dotenv.env['FIREBASE_ANDROID_PROJECT']!,
+    storageBucket: dotenv.env['FIREBASE_ANDROID_STORAGE']!,
   );
 }
