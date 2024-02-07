@@ -4,13 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessages extends StatelessWidget {
-  const ChatMessages({super.key});
+  const ChatMessages(this.chatroomId, {super.key});
+  final String chatroomId;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("chats")
+          .where('chatroomId', isEqualTo: chatroomId)
           .orderBy('createdAt', descending: true)
           .snapshots(),
       builder: (context, snapshot) {

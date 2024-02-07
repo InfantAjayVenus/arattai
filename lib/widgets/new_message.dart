@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NewMessage extends StatefulWidget {
-  const NewMessage({super.key});
+  const NewMessage(this.chatroomId, {super.key});
+  final String chatroomId;
 
   @override
   State<StatefulWidget> createState() {
@@ -33,7 +34,8 @@ class _NewMessageState extends State<NewMessage> {
       'text': messageText,
       'createdAt': Timestamp.now(),
       'uid': user.uid,
-      'username': await userData.data()!['username']
+      'username': await userData.data()!['username'],
+      'chatroomId': widget.chatroomId,
     });
   }
 
