@@ -39,7 +39,8 @@ class ChatroomsList extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
-                      return Chatroom(userChatRooms[index].id);
+                      return Chatroom(
+                          userChatRooms[index].id, chatRoom['name']);
                     },
                   ));
                 },
