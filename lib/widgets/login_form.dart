@@ -26,13 +26,10 @@ class _LoginFormState extends State<LoginForm> {
     });
 
     try {
-      print('DEBUG:LOGIN_VALUES: $email / $password');
-      final userCreds = await _firebase.signInWithEmailAndPassword(
+      await _firebase.signInWithEmailAndPassword(
           email: email, password: password);
-      print(userCreds);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-credential') {
-        print('DEBUG:SIGN_IN_ERROR: ${e.code}');
         setState(() {
           invalidCreds = true;
         });
