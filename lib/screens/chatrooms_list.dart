@@ -1,4 +1,5 @@
 import 'package:arattai/screens/chatroom.dart';
+import 'package:arattai/screens/new_chatroom.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -49,10 +50,13 @@ class ChatroomsList extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              /**
-               * TODO:
-               * Show a screen that takes details of a new room and creates one
-               */
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const NewChatroom();
+                  },
+                ),
+              );
             },
             child: const Icon(Icons.message),
           ),
